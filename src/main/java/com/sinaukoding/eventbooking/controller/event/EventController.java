@@ -1,6 +1,9 @@
 package com.sinaukoding.eventbooking.controller.event;
 
+import com.sinaukoding.eventbooking.model.app.AppPage;
+import com.sinaukoding.eventbooking.model.app.SimpleMap;
 import com.sinaukoding.eventbooking.model.filter.EventFilterRequestRecord;
+import com.sinaukoding.eventbooking.model.filter.UserFilterRequestRecord;
 import com.sinaukoding.eventbooking.model.request.EventRequestRecord;
 import com.sinaukoding.eventbooking.model.request.UserRequestRecord;
 import com.sinaukoding.eventbooking.model.response.BaseResponse;
@@ -49,16 +52,20 @@ public class EventController {
     }
 
     @PostMapping("find-all")
+    @PreAuthorize("hasAnyRole('ADMIN','ORGANIZER')")
     @Parameters({
             @Parameter(name = "page", description = "Page Number", in = ParameterIn.QUERY, schema = @Schema(type = "integer", defaultValue = "0"), required = true),
             @Parameter(name = "size", description = "Size Per Page", in = ParameterIn.QUERY, schema = @Schema(type = "integer", defaultValue = "10"), required = true),
-            @Parameter(name = "sort", description = "Sorting Data", in = ParameterIn.QUERY, schema = @Schema(type = "string", defaultValue = "startTime,desc"), required = true)
+            @Parameter(name = "sort", description = "Sorting Data (ex: startTime,desc)", in = ParameterIn.QUERY, schema = @Schema(type = "string", defaultValue = "startTime,desc"), required = true)
     })
-    @PreAuthorize("hasAnyRole('ADMIN','ORGANIZER')")
-    public BaseResponse<?> findAll(@PageableDefault(direction = Sort.Direction.DESC, sort = "startTime") Pageable pageable,
-                                   @RequestBody EventFilterRequestRecord filterRequest) {
-        return BaseResponse.ok(null, eventService.findAll(filterRequest, pageable));
+    public BaseResponse<AppPage<SimpleMap>> findAll(
+            @RequestBody(required = false) EventFilterRequestRecord filterRequest,
+            @PageableDefault(direction = Sort.Direction.DESC, sort = "startTime") Pageable pageable
+    ) {
+        AppPage<SimpleMap> page = eventService.findAll(filterRequest, pageable);
+        return BaseResponse.ok("List event berhasil diambil", page);
     }
+
 
     @GetMapping("find-by-id/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','ORGANIZER')")

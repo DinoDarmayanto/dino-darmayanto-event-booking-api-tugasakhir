@@ -1,5 +1,6 @@
 package com.sinaukoding.eventbooking.service.event;
 
+import com.sinaukoding.eventbooking.model.app.AppPage;
 import com.sinaukoding.eventbooking.model.app.SimpleMap;
 import com.sinaukoding.eventbooking.model.request.EventRequestRecord;
 import com.sinaukoding.eventbooking.model.filter.EventFilterRequestRecord;
@@ -12,7 +13,7 @@ public interface EventService {
     void add(EventRequestRecord request);
     void edit(String id, EventRequestRecord request);
     SimpleMap delete(String id);
-    Page<SimpleMap> findAll(EventFilterRequestRecord filterRequest, Pageable pageable);
+    AppPage<SimpleMap> findAll(EventFilterRequestRecord filterRequest, Pageable pageable);
     SimpleMap findById(String id);
 
 }

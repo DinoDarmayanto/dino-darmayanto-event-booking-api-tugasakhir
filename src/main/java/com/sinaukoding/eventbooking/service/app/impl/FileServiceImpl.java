@@ -108,13 +108,20 @@ public class FileServiceImpl implements FileService {
         }
     }
     @Override
-    public BaseResponse<?> delete(String eventId) {
-        Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new RuntimeException("Event tidak ditemukan"));
+    public BaseResponse<?> delete(String pathFile) {
+        try {
+            Path fileStorageLocation = Paths.get(uploadDirectory).toAbsolutePath().normalize();
+            Path filePath = fileStorageLocation.resolve(pathFile).normalize();
 
-        eventImageRepository.deleteByEventId(eventId);
+            if (!Files.exists(filePath)) {
+                throw new RuntimeException("File: " + pathFile + " tidak ditemukan");
+            }
 
-        return BaseResponse.ok("Semua gambar untuk event [" + event.getTitle() + "] berhasil dihapus", null);
+            Files.delete(filePath);
+            return BaseResponse.ok("File: " + pathFile + " berhasil dihapus", null);
+        } catch (Exception ex) {
+            throw new RuntimeException("Gagal menghapus file: " + pathFile, ex);
+        }
     }
 
 

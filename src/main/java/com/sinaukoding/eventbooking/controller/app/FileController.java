@@ -39,10 +39,9 @@ public class FileController {
         IOUtils.copy(resource.getInputStream(), response.getOutputStream());
     }
 
-    @DeleteMapping("delete")
+    @PostMapping("delete")
     public BaseResponse<?> deleteFile(@RequestParam String pathFile) {
         return fileService.delete(pathFile);
     }
-
 
 }

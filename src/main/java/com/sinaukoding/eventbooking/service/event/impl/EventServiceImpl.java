@@ -19,12 +19,12 @@ import com.sinaukoding.eventbooking.util.FilterUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -89,9 +89,8 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Page<SimpleMap> findAll(EventFilterRequestRecord filterRequest, Pageable pageable) {
+    public AppPage<SimpleMap> findAll(EventFilterRequestRecord filterRequest, Pageable pageable) {
         CustomBuilder<Event> builder = new CustomBuilder<>();
-
         if (filterRequest != null) {
             // date range -> startTime between startDate and endDate
             if (filterRequest.startDate() != null && filterRequest.endDate() != null) {
@@ -131,11 +130,12 @@ public class EventServiceImpl implements EventService {
             }
         }
 
+
         Page<Event> page = eventRepository.findAll(builder.build(), pageable);
 
         List<SimpleMap> data = page.stream()
                 .map(e -> eventMapper.toSimpleMap(e, false))
-                .collect(Collectors.toList());
+                .toList();
 
         return AppPage.create(data, pageable, page.getTotalElements());
     }
