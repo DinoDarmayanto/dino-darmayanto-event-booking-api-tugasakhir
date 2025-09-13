@@ -245,32 +245,33 @@ public class CustomSpecification<T> implements Specification<T> {
 
         if (multipleCriteria.getInner() != null && !multipleCriteria.getInner().getIsProcessed()) {
             predicateInner = getPredicate(multipleCriteria.getInner(), root, builder);
+            if (predicateInner == null) predicateInner = builder.conjunction();
         }
 
         for (MultipleCriteria.Criteria criteria : multipleCriteria.getCriterias()) {
             List<Predicate> p = new ArrayList<>();
 
             for (SearchCriteria searchCriteria : criteria.getSearchCriterias()) {
-                p.add(getPredicate(searchCriteria, root, builder));
+                Predicate pred = getPredicate(searchCriteria, root, builder);
+                if (pred != null) p.add(pred);
             }
 
-            Predicate[] p2 = p.toArray(new Predicate[p.size() - 1]);
-
+            Predicate[] p2 = p.isEmpty() ? new Predicate[0] : p.toArray(new Predicate[0]);
             predicates.add(criteria.getOperator().equals(SearchCriteria.OPERATOR_AND) ? builder.and(p2) : builder.or(p2));
         }
 
         multipleCriteria.setIsProcessed(true);
 
-        Predicate[] predicatesArray = predicates.toArray(new Predicate[predicates.size() - 1]);
+        Predicate[] predicatesArray = predicates.isEmpty() ? new Predicate[0] : predicates.toArray(new Predicate[0]);
         Predicate predicatesProcessed = multipleCriteria.getOperatorCriteria().equalsIgnoreCase(SearchCriteria.OPERATOR_AND) ? builder.and(predicatesArray) : builder.or(predicatesArray);
-        Predicate predicate = predicatesProcessed;
 
         if (multipleCriteria.getInner() != null) {
-            predicate = multipleCriteria.getOperatorInner().equals(SearchCriteria.OPERATOR_AND) ? builder.and(predicatesProcessed, predicateInner) : builder.or(predicatesProcessed, predicateInner);
+            predicatesProcessed = multipleCriteria.getOperatorInner().equals(SearchCriteria.OPERATOR_AND) ? builder.and(predicatesProcessed, predicateInner) : builder.or(predicatesProcessed, predicateInner);
         }
 
-        return predicate;
+        return predicatesProcessed;
     }
+
 
     private Path<?> getPath(Root<T> root, SearchCriteria criteria) {
         String[] attributes = criteria.getKey().split(SEPARATOR);
