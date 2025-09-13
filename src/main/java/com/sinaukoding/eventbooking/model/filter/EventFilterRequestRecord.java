@@ -20,9 +20,5 @@ public record EventFilterRequestRecord(
         @NotNull(message = "Max price harus diisi")
         BigDecimal maxPrice,
         @NotNull(message = "Published harus diisi")
-        Boolean published,
-        @NotNull(message = "Page harus diisi")
-        Integer page,
-        @NotNull(message = "Size harus diisi")
-        Integer size
+        Boolean published
 ) {}

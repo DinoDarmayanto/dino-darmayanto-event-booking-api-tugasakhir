@@ -47,8 +47,7 @@ public record EventRequestRecord(
         @NotEmpty(message = "Minimal 1 tag wajib dipilih")
         List<String> tags,
 
-        @NotNull(message = "Pembuat wajib diisi")
-        User createdBy
-
+        @NotBlank(message = "ID pembuat wajib diisi")
+        String createdById
 ) {
 }

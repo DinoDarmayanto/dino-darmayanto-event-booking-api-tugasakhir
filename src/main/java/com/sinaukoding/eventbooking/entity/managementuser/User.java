@@ -68,8 +68,5 @@ public class User extends BaseEntity {
     @Column(nullable = false, length = 20)
     private Status status = Status.AKTIF;
 
-    @Future(message = "Waktu expired token harus di masa depan")
-    @Column(name = "expired_token_at")
-    private LocalDateTime expiredTokenAt;
 
 }

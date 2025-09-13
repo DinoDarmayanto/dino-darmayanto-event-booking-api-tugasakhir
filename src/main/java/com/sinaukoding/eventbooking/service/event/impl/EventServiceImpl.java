@@ -48,7 +48,8 @@ public class EventServiceImpl implements EventService {
         User currentUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User tidak ditemukan"));
 
-        event.setCreatedBy((Set<User>) currentUser);
+        // Assign langsung tanpa cast
+        event.setCreatedBy(currentUser);
 
         eventRepository.save(event);
         log.info("Event '{}' berhasil dibuat oleh {}", event.getTitle(), currentUser.getUsername());

@@ -65,14 +65,8 @@ public class Event extends BaseEntity {
     @Column(nullable = false)
     private boolean published = false;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "t_event_user",
-            joinColumns = @JoinColumn(name = "event_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"),
-            uniqueConstraints = {
-                    @UniqueConstraint(name = "uk_event_user", columnNames = {"event_id", "user_id"})
-            }
-    )
-    private Set<User> createdBy = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by_id", nullable = false)
+    private User createdBy;
 }
+
