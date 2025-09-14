@@ -1,0 +1,50 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/eventdb
+    username: eventuser
+    password: eventpassword123
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 10
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        enable_lazy_load_no_trans: true
+        default_schema: eventdevelopment
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  profiles:
+    active: development
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+  banner:
+    location: classpath:banner.txt
+    charset: UTF-8
+
+
+app:
+  upload-directory: event-uploads
+  folder-temp: ./event-temp/
+
+logging:
+  level:
+    com.sinaukoding.ecommerce: TRACE
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    defaultModelsExpandDepth: -1
+    docExpansion: none
+    tagsSorter: alpha
+    operationsSorter: alpha
