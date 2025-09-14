@@ -73,6 +73,22 @@ Menyimpan gambar terkait event. Kolom penting:
 - **Status** → AKTIF, TIDAK_AKTIF
 - **TipeUpload** → IMAGE Integrate with your tools
 
+
+## API Documentation
+
+Aplikasi Event Booking menyediakan dokumentasi API menggunakan **Swagger / OpenAPI**.  
+Dokumentasi ini bisa diakses di URL berikut setelah aplikasi dijalankan:
+
+- **Development:** [http://localhost:8081/swagger-ui.html](http://localhost:8081/swagger-ui.html)
+- **Staging:** [http://localhost:8081/swagger-ui.html](http://localhost:8081/swagger-ui.html)
+
+### Authentication
+
+Semua endpoint yang membutuhkan otorisasi menggunakan **JWT Bearer Token**.  
+Tambahkan header berikut saat melakukan request ke endpoint yang membutuhkan autentikasi:
+
+
+
 - [ ] [Set up project integrations](https://git@github.com:DinoDarmayanto/dino-darmayanto-event-booking-api-tugasakhir/-/settings/integrations)
 
 ## Collaborate with your team
