@@ -71,7 +71,7 @@ Menyimpan gambar terkait event. Kolom penting:
 
 - **Role** → ADMIN, USER, ORGANIZER
 - **Status** → AKTIF, TIDAK_AKTIF
-- **TipeUpload** → IMAGE## Integrate with your tools
+- **TipeUpload** → IMAGE Integrate with your tools
 
 - [ ] [Set up project integrations](https://git@github.com:DinoDarmayanto/dino-darmayanto-event-booking-api-tugasakhir/-/settings/integrations)
 
