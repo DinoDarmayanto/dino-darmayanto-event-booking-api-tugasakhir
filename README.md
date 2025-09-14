@@ -59,13 +59,11 @@ Menyimpan gambar terkait event. Kolom penting:
 
 1. **User → Event**
    - Satu `User` bisa membuat banyak `Event`
-   - Relasi: `User.id` (PK) → `Event.createdBy` (FK)
-   - Kardinalitas: 1..*  
+   - Relasi: `User.id` (PK) → `Event.createdBy` (FK) 
 
 2. **Event → EventImage**
    - Satu `Event` bisa memiliki banyak `EventImage`
    - Relasi: `Event.id` (PK) → `EventImage.event` (FK)
-   - Kardinalitas: 1..*  
 
 ### Enums
 
