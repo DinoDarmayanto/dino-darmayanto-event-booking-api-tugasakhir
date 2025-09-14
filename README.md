@@ -30,41 +30,48 @@ Berikut adalah ERD (Entity Relationship Diagram) untuk sistem **Event Booking AP
 
 ## Keterangan Tabel
 
-- **User**  
-  Menyimpan data pengguna sistem. Kolom penting:
-  - `id` → Primary Key
-  - `username`, `email`, `password` → Informasi login
-  - `role` → Role user (ADMIN / USER)
-  - `status` → Status aktif/non-aktif
+#### 1. User
+Menyimpan data pengguna sistem. Kolom penting:
+- `id` → Primary Key
+- `username`, `email`, `password` → Informasi login
+- `firstName`, `lastName`, `phoneNumber` → Profil user
+- `role` → Role user (ADMIN / USER / ORGANIZER)
+- `status` → Status akun (AKTIF / TIDAK_AKTIF)
+- `createdAt`, `updatedAt`, `deleted` → Audit field
 
-- **Event**  
-  Menyimpan data event. Kolom penting:
-  - `id` → Primary Key
-  - `title`, `description`, `start_time`, `end_time`, `location`, `price` → Detail event
-  - `created_by_id` → Foreign Key ke `User.id` (pembuat event)
-  - `published` → Status publikasi event
+#### 2. Event
+Menyimpan data event. Kolom penting:
+- `id` → Primary Key
+- `title`, `description`, `startTime`, `endTime`, `capacity`, `price`, `location` → Detail event
+- `published` → Status publikasi event
+- `createdBy` → Foreign Key ke `User.id` (pembuat event)
+- `createdAt`, `updatedAt`, `deleted` → Audit field
 
-- **EventImage**  
-  Menyimpan gambar terkait event. Kolom penting:
-  - `id` → Primary Key
-  - `event_id` → Foreign Key ke `Event.id`
-  - `url`, `altText`, `is_primary` → Detail gambar
+#### 3. EventImage
+Menyimpan gambar terkait event. Kolom penting:
+- `id` → Primary Key
+- `event` → Foreign Key ke `Event.id`
+- `url`, `altText`, `isPrimary` → Detail gambar
+- `uploadedAt` → Waktu upload
+- `createdAt`, `updatedAt`, `deleted` → Audit field
 
 ### Relasi Antar Tabel
 
-1. **User → Event**  
-   - Satu `User` bisa membuat banyak `Event`  
-   - Relasi: `User.id` (PK) → `Event.created_by_id` (FK)  
+1. **User → Event**
+   - Satu `User` bisa membuat banyak `Event`
+   - Relasi: `User.id` (PK) → `Event.createdBy` (FK)
    - Kardinalitas: 1..*  
 
-2. **Event → EventImage**  
-   - Satu `Event` bisa memiliki banyak `EventImage`  
-   - Relasi: `Event.id` (PK) → `EventImage.event_id` (FK)  
+2. **Event → EventImage**
+   - Satu `Event` bisa memiliki banyak `EventImage`
+   - Relasi: `Event.id` (PK) → `EventImage.event` (FK)
    - Kardinalitas: 1..*  
 
-> Catatan: ERD lengkap dapat dilihat pada gambar di atas untuk visualisasi kolom, tipe data, dan relasi.
+### Enums
 
-## Integrate with your tools
+- **Role** → ADMIN, USER, ORGANIZER
+- **Status** → AKTIF, TIDAK_AKTIF
+- **TipeUpload** → IMAGE## Integrate with your tools
 
 - [ ] [Set up project integrations](https://git@github.com:DinoDarmayanto/dino-darmayanto-event-booking-api-tugasakhir/-/settings/integrations)
 
