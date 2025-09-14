@@ -54,12 +54,12 @@ public class UserController {
     @Parameters({
             @Parameter(name = "page", description = "Page Number", in = ParameterIn.QUERY, schema = @Schema(type = "integer", defaultValue = "0"), required = true),
             @Parameter(name = "size", description = "Size Per Page", in = ParameterIn.QUERY, schema = @Schema(type = "integer", defaultValue = "10"), required = true),
-            @Parameter(name = "sort", description = "Sorting Data", in = ParameterIn.QUERY, schema = @Schema(type = "string", defaultValue = "modifiedDate,desc"), required = true)
+            @Parameter(name = "sort", description = "Sorting Data", in = ParameterIn.QUERY, schema = @Schema(type = "string", defaultValue = "updatedAt,desc"), required = true)
     })
     @PreAuthorize("hasAnyRole('ADMIN','ORGANIZER')")
     public BaseResponse<AppPage<SimpleMap>> findAll(
             @RequestBody(required = false) UserFilterRequestRecord filterRequest,
-            @PageableDefault(direction = Sort.Direction.DESC, sort = "modifiedDate") Pageable pageable
+            @PageableDefault(direction = Sort.Direction.DESC, sort = "updatedAt") Pageable pageable
     ) {
         AppPage<SimpleMap> page = (AppPage<SimpleMap>) userService.findAll(filterRequest, pageable);
         return BaseResponse.ok("List user berhasil diambil", page);
