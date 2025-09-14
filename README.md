@@ -26,7 +26,7 @@ git push -uf origin main
 
 Berikut adalah ERD (Entity Relationship Diagram) untuk sistem **Event Booking API**:
 
-![ERD Event Booking](ddl/ERD Event Booking.jpg)
+![ERD Event Booking](ddl/ERD_Event_Booking.jpg)
 
 ### Keterangan Tabel
 - **User** → Menyimpan data pengguna sistem.
