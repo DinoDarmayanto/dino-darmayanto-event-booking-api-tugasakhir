@@ -40,13 +40,17 @@ public class EventServiceImpl implements EventService {
     @Override
     public void add(EventRequestRecord request) {
         validatorService.validator(request);
+        log.info("Menambahkan event baru: title [{}]", request.title());
 
         Event event = eventMapper.requestToEntity(request);
 
         // Ambil user dari security context
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User currentUser = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User tidak ditemukan"));
+                .orElseThrow(() -> {
+                    log.warn("User [{}] tidak ditemukan saat membuat event", username);
+                    return new RuntimeException("User tidak ditemukan");
+                });
 
         // Assign langsung tanpa cast
         event.setCreatedBy(currentUser);
@@ -59,11 +63,16 @@ public class EventServiceImpl implements EventService {
     @Override
     public void edit(String id, EventRequestRecord request) {
         validatorService.validator(request);
+        log.info("Mengupdate event dengan ID [{}]", id);
 
         Event existing = eventRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Event tidak ditemukan"));
+                .orElseThrow(() -> {
+                    log.warn("Event dengan ID [{}] tidak ditemukan", id);
+                    return new RuntimeException("Event tidak ditemukan");
+                });
 
         if (request.endTime().isBefore(request.startTime())) {
+            log.warn("Waktu selesai [{}] lebih awal daripada waktu mulai [{}]", request.endTime(), request.startTime());
             throw new RuntimeException("Waktu selesai harus setelah waktu mulai");
         }
 
@@ -77,10 +86,16 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public SimpleMap delete(String id) {
+        log.info("Menghapus event dengan ID [{}]", id);
+
         Event event = eventRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Event tidak ditemukan"));
+                .orElseThrow(() -> {
+                    log.warn("Event dengan ID [{}] tidak ditemukan", id);
+                    return new RuntimeException("Event tidak ditemukan");
+                });
 
         eventRepository.delete(event);
+        log.info("Event '{}' (id={}) berhasil dihapus", event.getTitle(), event.getId());
 
         return SimpleMap.createMap()
                 .add("id", event.getId())
@@ -90,6 +105,8 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public AppPage<SimpleMap> findAll(EventFilterRequestRecord filterRequest, Pageable pageable) {
+        log.info("Mencari semua event dengan filter: {}", filterRequest);
+
         CustomBuilder<Event> builder = new CustomBuilder<>();
         if (filterRequest != null) {
             // date range -> startTime between startDate and endDate
@@ -136,16 +153,20 @@ public class EventServiceImpl implements EventService {
         List<SimpleMap> data = page.stream()
                 .map(e -> eventMapper.toSimpleMap(e, false))
                 .toList();
-
+        log.info("Ditemukan {} event", page.getTotalElements());
         return AppPage.create(data, pageable, page.getTotalElements());
     }
 
 
     @Override
     public SimpleMap findById(String id) {
+        log.info("Mencari event dengan ID [{}]", id);
         Event event = eventRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Event tidak ditemukan"));
-
+                .orElseThrow(() -> {
+                    log.warn("Event dengan ID [{}] tidak ditemukan", id);
+                    return new RuntimeException("Event tidak ditemukan");
+                });
+        log.info("Event '{}' (id={}) ditemukan", event.getTitle(), event.getId());
         return eventMapper.toSimpleMap(event, true);
     }
 
