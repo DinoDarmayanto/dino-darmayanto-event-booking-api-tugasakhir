@@ -28,14 +28,41 @@ Berikut adalah ERD (Entity Relationship Diagram) untuk sistem **Event Booking AP
 
 ![ERD Event Booking](ddl/ERD_Event_Booking.jpg)
 
-### Keterangan Tabel
-- **User** → Menyimpan data pengguna sistem.
-- **Event** → Menyimpan data event.
-- **EventImage** → Menyimpan gambar terkait event, bisa menandai primary image.
-- Relasi:
-  - `User` 1..* → `Event` (satu user bisa membuat banyak event)
-  - `Event` 1..* → `EventImage` (satu event bisa punya banyak gambar)
+## Keterangan Tabel
 
+- **User**  
+  Menyimpan data pengguna sistem. Kolom penting:
+  - `id` → Primary Key
+  - `username`, `email`, `password` → Informasi login
+  - `role` → Role user (ADMIN / USER)
+  - `status` → Status aktif/non-aktif
+
+- **Event**  
+  Menyimpan data event. Kolom penting:
+  - `id` → Primary Key
+  - `title`, `description`, `start_time`, `end_time`, `location`, `price` → Detail event
+  - `created_by_id` → Foreign Key ke `User.id` (pembuat event)
+  - `published` → Status publikasi event
+
+- **EventImage**  
+  Menyimpan gambar terkait event. Kolom penting:
+  - `id` → Primary Key
+  - `event_id` → Foreign Key ke `Event.id`
+  - `url`, `altText`, `is_primary` → Detail gambar
+
+### Relasi Antar Tabel
+
+1. **User → Event**  
+   - Satu `User` bisa membuat banyak `Event`  
+   - Relasi: `User.id` (PK) → `Event.created_by_id` (FK)  
+   - Kardinalitas: 1..*  
+
+2. **Event → EventImage**  
+   - Satu `Event` bisa memiliki banyak `EventImage`  
+   - Relasi: `Event.id` (PK) → `EventImage.event_id` (FK)  
+   - Kardinalitas: 1..*  
+
+> Catatan: ERD lengkap dapat dilihat pada gambar di atas untuk visualisasi kolom, tipe data, dan relasi.
 
 ## Integrate with your tools
 
