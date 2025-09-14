@@ -22,6 +22,20 @@ git remote add origin https://gitlab.com/username/event-booking-api.git
 git branch -M main
 git push -uf origin main
 ```
+## Visuals
+
+Berikut adalah ERD (Entity Relationship Diagram) untuk sistem **Event Booking API**:
+
+![ERD Event Booking](DDL/ERD%20Event%20Booking.jpg)
+
+### Keterangan Tabel
+- **User** → Menyimpan data pengguna sistem.
+- **Event** → Menyimpan data event.
+- **EventImage** → Menyimpan gambar terkait event, bisa menandai primary image.
+- Relasi:
+  - `User` 1..* → `Event` (satu user bisa membuat banyak event)
+  - `Event` 1..* → `EventImage` (satu event bisa punya banyak gambar)
+
 
 ## Integrate with your tools
 
